@@ -1,0 +1,23 @@
+{
+  "name": "namaste-react",
+  "version": "1.0.0",
+  "source": "app.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "buid": "parcel build index.html",
+    "test": "jest"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Utsav",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "parcel": "^2.14.3"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}
