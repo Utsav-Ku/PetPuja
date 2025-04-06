@@ -1,75 +1,53 @@
 import ResturantCard from "./ResturantCard";
-import resList from "../utils/mockData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Body = () => {
+  const [listOfRestaurants, setListOfRestraunt] = useState([]);
 
-    //Local State Variable - super powerful variable
-    // const arr = useState([]);
-    // const [ listOfResturants, setListOfResturants ] = arr; Destructuring the array
-    // const listOfResturants = arr[0];
-    // const setListOfResturants = arr[1]; Destructuring the array
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-    const [ listOfResturants, setListOfResturants ] = useState([
-        {
-            name: "John",
-            cuisine: "Fast Food",
-            rating: 3.8,
-            deliveryTime: "30 minutes",
-            image: "https://th.bing.com/th/id/OIP.2rubt7oRrm9ukL2Px8ku6gHaEK?rs=1&pid=ImgDetMain",
-            id: "420"
-        },
-        {
-            name: "Meghana Foods",
-            cuisine: "Biryani",
-            rating: 4.5,
-            deliveryTime: "40 minutes",
-            image: "https://th.bing.com/th/id/OIP.2rubt7oRrm9ukL2Px8ku6gHaEK?rs=1&pid=ImgDetMain",
-            id: "231"
-        }
-    ]);
+  const fetchData = async () => {
+    try {
+      const data = await fetch(
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9716&lng=77.5946&page_type=DESKTOP_WEB_LISTING"
+      );
+      const json = await data.json();
 
-    //Normal JS Variable
-    let listOfResturantsJS = [
-        {
-            name: "John",
-            cuisine: "Fast Food",
-            rating: 3.8,
-            deliveryTime: "30 minutes",
-            image: "https://th.bing.com/th/id/OIP.2rubt7oRrm9ukL2Px8ku6gHaEK?rs=1&pid=ImgDetMain",
-            id: "420"
-        },
-        {
-            name: "Meghana Foods",
-            cuisine: "Biryani",
-            rating: 4.5,
-            deliveryTime: "40 minutes",
-            image: "https://th.bing.com/th/id/OIP.2rubt7oRrm9ukL2Px8ku6gHaEK?rs=1&pid=ImgDetMain",
-            id: "231"
-        }
-    ];
+      const restaurantCards = json?.data?.cards?.find(
+        (card) =>
+          card?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
 
-    return (
-        <div className='body'>
-            <div className='filter'>
-                <button className="filter-btn" 
-                    onClick={() => {
-                        //filter logic here
-                        const filteredList = listOfResturants.filter((res) => res.rating > 4);
-                        setListOfResturants(filteredList);
-                    }}>
-                    Top Rated Resturants
-                </button>
-            </div>
-            <div className='res-container'>
-                {
-                    listOfResturants.map((restaurant) => (
-                        <ResturantCard key={restaurant.id} restaurant={restaurant} />
-                    ))
-                }
-            </div>
-        </div>
-    )
-}
+      setListOfRestraunt(restaurantCards || []);
+    } catch (error) {
+      console.error("Failed to fetch restaurants:", error);
+    }
+  };
+
+  return (
+    <div className="body">
+      <div className="filter">
+        <button
+          className="filter-btn"
+          onClick={() => {
+            const filteredList = listOfRestaurants.filter(
+              (res) => res.info.avgRating > 4
+            );
+            setListOfRestraunt(filteredList);
+          }}
+        >
+          Top Rated Restaurants
+        </button>
+      </div>
+      <div className="res-container">
+        {listOfRestaurants.map((restaurant) => (
+          <ResturantCard key={restaurant.info.id} resData={restaurant.info} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Body;
