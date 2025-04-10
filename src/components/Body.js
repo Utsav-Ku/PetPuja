@@ -4,6 +4,8 @@ import Shimmer from "./Shimmer";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [ filteredRestaurants, setFilteredRestaurants] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -22,16 +24,29 @@ const Body = () => {
       )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
 
       setListOfRestraunt(restaurantCards || []);
+      setFilteredRestaurants(restaurantCards || []); // Initialize filteredRestaurants with the same data
     } catch (error) {
       console.error("Failed to fetch restaurants:", error);
     }
   };
 
-
   //conditional rendering
   return listOfRestaurants.length === 0 ? <Shimmer /> : (
     <div className="body">
       <div className="filter">
+        <div className="search">
+          <input type="text" className="search-box" value={searchText} onChange={(e) => {setSearchText(e.target.value); }} />
+          <button
+            className="search-btn"
+            onClick={() => {
+              const filteredRestaurants = listOfRestaurants.filter((res) =>
+                res?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilteredRestaurants(filteredRestaurants);
+              setSearchText(""); // Optional: clear the input after search
+            }}
+          >Search</button>
+        </div>
         <button
           className="filter-btn"
           onClick={() => {
@@ -45,7 +60,7 @@ const Body = () => {
         </button>
       </div>
       <div className="res-container">
-        {listOfRestaurants.map((restaurant) => (
+        {filteredRestaurants.map((restaurant) => (
           <ResturantCard key={restaurant.info.id} resData={restaurant.info} />
         ))}
       </div>
