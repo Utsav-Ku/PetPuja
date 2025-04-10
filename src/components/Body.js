@@ -1,5 +1,6 @@
 import ResturantCard from "./ResturantCard";
 import { useEffect, useState } from "react";
+import Shimmer from "./Shimmer";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
@@ -25,6 +26,10 @@ const Body = () => {
       console.error("Failed to fetch restaurants:", error);
     }
   };
+
+  if(listOfRestaurants.length === 0) {
+    return <Shimmer />;
+  }
 
   return (
     <div className="body">
