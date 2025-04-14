@@ -49,7 +49,7 @@ const Body = () => {
         <div className="search m-4 p-4">
           <input type="text" className="search-box border border-solid border-black" value={searchText} onChange={(e) => {setSearchText(e.target.value); }} />
           <button
-            className="search-btn px-4 py-1 bg-red-500 m-2 rounded-lg"
+            className="search-btn px-4 py-1 bg-red-500 m-2 rounded-lg text-white"
             onClick={() => {
               const filteredRestaurants = listOfRestaurants.filter((res) =>
                 res?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
@@ -61,7 +61,7 @@ const Body = () => {
         </div>
         <div className="m-4 p-4 flex items-center">
           <button
-            className="px-4 py-1 m-2 border rounded-lg bg-green-200"
+            className="px-4 py-1 m-2 border rounded-lg bg-green-500 text-white"
             onClick={() => {
               const filteredList = listOfRestaurants.filter(
                 (res) => res.info.avgRating > 4.5
