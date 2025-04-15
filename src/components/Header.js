@@ -10,6 +10,7 @@ const Header = () => {
     const [btnNameReact, setBtnNameReact] = useState("Login");
 
     const data = useContext(UserContext);
+    
     return(
         <div className='flex justify-between bg-pink-200 shadow-lg m-0.5 items-center sm:bg-yellow-200 lg:bg-slate-200'>
             <div className='logo w-56 items-center pl-4'>
