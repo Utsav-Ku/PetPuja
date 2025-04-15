@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import Header from './components/Header.js'
 import Body from './components/Body.js'
@@ -7,14 +7,29 @@ import About from './components/About.js'
 import Contact from './components/Contact.js'
 import Error from './components/Error.js'
 import ResturantMenu from './components/ResturantMenu.js'
-
+import UserContext from './utils/UserContext.js'
 
 const AppLayout = () => {
+
+    const [ userInfo, setUserInfo ] = useState();
+
+    //authentication
+    useEffect(() => {
+        const data = {
+            name: "Utsav Kumar"
+        }
+        setUserInfo(data.name);
+    }, [])
+
     return (
-        <div className='app'>
-            <Header />
-            <Outlet />
-        </div>
+        <UserContext.Provider value={{ loggedInUser: userInfo }}>
+            <div className='app'>
+                <UserContext.Provider value={{ loggedInUser: "Elon Musk" }}>
+                    <Header />
+                </UserContext.Provider>
+                <Outlet />
+            </div>
+        </UserContext.Provider>
     )
 }
 

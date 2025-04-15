@@ -1,16 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Header = () => {
-
-    let btnName = "Login";
 
     const onlineStatus = useOnlineStatus();
 
     const [btnNameReact, setBtnNameReact] = useState("Login");
 
-    return (
+    const data = useContext(UserContext);
+    return(
         <div className='flex justify-between bg-pink-200 shadow-lg m-0.5 items-center sm:bg-yellow-200 lg:bg-slate-200'>
             <div className='logo w-56 items-center pl-4'>
                 {/* { <img src='https://static.vecteezy.com/system/resources/previews/021/953/308/original/food-ordering-app-logo-with-points-and-fork-shapes-in-the-center-free-vector.jpg' /> } */}
@@ -24,6 +24,7 @@ const Header = () => {
                     <li className="px-4"><Link to= "/contact">Contact Us</Link> </li>
                     <li className="px-4">Cart</li>
                     <button className="login" onClick={() => btnNameReact == "Login" ? setBtnNameReact("Logout") : setBtnNameReact("Login") } >{btnNameReact}</button>
+                    <li className="px-4 font-bold">{data.loggedInUser}</li>
                 </ul>
             </div>
         </div>
